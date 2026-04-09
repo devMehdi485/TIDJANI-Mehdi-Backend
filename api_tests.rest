@@ -1,0 +1,172 @@
+@baseUrl = http://localhost:3001
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtZWhkaUAyaWUuY29tIiwidXNlcm5hbWUiOiJNZWhkaSBUaWRqYW5pIiwiaWF0IjoxNzc1NzQ0MTUzLCJleHAiOjE3NzYzNDg5NTN9.f-oIRnBTNBgcauzC3j22Q84GwpkjSo05Mp0iqtDncuc
+###
+# ── SANTÉ DU SERVEUR ─────────────────────────────────────────────
+###
+
+### GET - Vérifier que le serveur fonctionne
+GET {{baseUrl}}/
+Accept: application/json
+
+###
+# ── AUTH ─────────────────────────────────────────────────────────
+###
+
+### POST - Créer un compte
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "Mehdi Tidjani",
+  "email": "mehdi@2ie.com",
+  "password": "motdepasse123"
+}
+
+###
+
+### POST - Se connecter
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "mehdi@2ie.com",
+  "password": "motdepasse123"
+}
+
+###
+
+### GET - Profil utilisateur connecté (protégé)
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer {{token}}
+
+###
+# ── CATÉGORIES ───────────────────────────────────────────────────
+###
+
+### GET - Récupérer toutes les catégories
+GET {{baseUrl}}/api/categories
+Accept: application/json
+
+###
+
+### POST - Créer une catégorie (protégé)
+POST {{baseUrl}}/api/categories
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "NBA",
+  "slug": "nba",
+  "description": "Pronostics et analyses du championnat de basketball americain"
+}
+
+###
+# ── ARTICLES ─────────────────────────────────────────────────────
+###
+
+### GET - Récupérer tous les articles
+GET {{baseUrl}}/api/articles
+Accept: application/json
+
+###
+
+### GET - Récupérer un article par ID
+GET {{baseUrl}}/api/articles/1
+Accept: application/json
+
+###
+
+### GET - Article inexistant (doit retourner 404)
+GET {{baseUrl}}/api/articles/9999
+Accept: application/json
+
+###
+
+### POST - Créer un article (protégé)
+POST {{baseUrl}}/api/articles
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Ligue 1 : L'OL peut-il accrocher le podium ?",
+  "content": "L'Olympique Lyonnais réalise une seconde partie de saison remarquable. Après un début de championnat difficile, les Gones ont enchaîné 7 matchs sans défaite et pointent désormais à 4 points du podium.\n\nLeur attaque retrouvée, portée par un Alexandre Lacazette en grande forme, offre de nombreuses opportunités de paris. La cote pour une qualification en Europa League à 1.90 représente une valeur intéressante.\n\nNos experts recommandent de miser sur Lyon dans les prochaines confrontations à domicile, où leur bilan est particulièrement solide cette saison.",
+  "author": "Karim Benzali",
+  "category": "Ligue 1",
+  "excerpt": "L'OL en forme, analyse des chances de podium et opportunités de paris.",
+  "image": "/image/ligue1.jpg",
+  "date": "2026-04-09",
+  "tags": "Lyon,Ligue1,Pronostic,Podium",
+  "category_id": 1
+}
+
+###
+
+### PUT - Modifier un article (protégé)
+PUT {{baseUrl}}/api/articles/7
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Ligue 1 : PSG vs OM - Analyse et pronostic du Classique (MAJ)",
+  "content": "Mise à jour de notre analyse. Le PSG confirme son statut de favori avec une série de 10 victoires consécutives. La cote sur PSG + plus de 2.5 buts reste notre recommandation principale à 1.95.",
+  "author": "Karim Benzali",
+  "category": "Ligue 1",
+  "excerpt": "Analyse mise à jour du Classique PSG-OM avec les dernières statistiques.",
+  "image": "/image/ligue1.jpg",
+  "date": "2026-03-01",
+  "tags": "PSG,OM,Classique,Pronostic",
+  "category_id": 1
+}
+
+###
+
+### DELETE - Supprimer un article (protégé)
+DELETE {{baseUrl}}/api/articles/7
+Authorization: Bearer {{token}}
+
+###
+# ── COMMENTAIRES ─────────────────────────────────────────────────
+###
+
+### GET - Récupérer les commentaires de l'article 1
+GET {{baseUrl}}/api/articles/1/comments
+Accept: application/json
+
+###
+
+### GET - Récupérer les commentaires de l'article 5 (Champions League)
+GET {{baseUrl}}/api/articles/5/comments
+Accept: application/json
+
+###
+
+### POST - Ajouter un commentaire
+POST {{baseUrl}}/api/articles/1/comments
+Content-Type: application/json
+
+{
+  "author": "Lucas M.",
+  "content": "Super analyse ! Je suis aussi sur PSG mais je prends le -1.5 handicap à 1.80 pour plus de valeur.",
+  "date": "2026-04-09"
+}
+
+###
+
+### POST - Commentaire sans author (doit retourner 400)
+POST {{baseUrl}}/api/articles/1/comments
+Content-Type: application/json
+
+{
+  "content": "Commentaire sans auteur"
+}
+
+###
+
+### POST - Commentaire sur article inexistant (doit retourner 404)
+POST {{baseUrl}}/api/articles/9999/comments
+Content-Type: application/json
+
+{
+  "author": "Test",
+  "content": "Article inexistant"
+}
