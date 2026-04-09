@@ -8,12 +8,12 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
-// ── Middlewares globaux ──────────────────────────────────────────
+// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ── Route de santé ───────────────────────────────────────────────
+// Health check
 app.get('/', (req, res) => {
   res.json({
     success: true,
@@ -27,17 +27,17 @@ app.get('/', (req, res) => {
   });
 });
 
-// ── Routes API ───────────────────────────────────────────────────
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/categories', categoryRoutes);
 
-// ── 404 ──────────────────────────────────────────────────────────
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({ success: false, message: `Route introuvable : ${req.originalUrl}` });
 });
 
-// ── Gestionnaire d'erreurs global ────────────────────────────────
+// Error handler
 app.use(errorHandler);
 
 module.exports = app;

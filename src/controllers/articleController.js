@@ -1,7 +1,6 @@
 const Article = require('../models/articleModel');
 const Category = require('../models/categoryModel');
 
-// GET /api/articles
 const getAllArticles = async (req, res, next) => {
   try {
     const articles = await Article.getAll();
@@ -9,7 +8,6 @@ const getAllArticles = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-// GET /api/articles/:id
 const getArticleById = async (req, res, next) => {
   try {
     const article = await Article.getById(req.params.id);
@@ -18,7 +16,6 @@ const getArticleById = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-// POST /api/articles
 const createArticle = async (req, res, next) => {
   try {
     const { title, content, author, category, excerpt, image, date, tags, category_id } = req.body;
@@ -27,7 +24,6 @@ const createArticle = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Les champs title, content, author et category sont requis.' });
     }
 
-    // Vérifier la catégorie si category_id fourni
     if (category_id) {
       const cat = await Category.getById(category_id);
       if (!cat) return res.status(400).json({ success: false, message: 'Catégorie introuvable.' });
@@ -40,7 +36,6 @@ const createArticle = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-// PUT /api/articles/:id
 const updateArticle = async (req, res, next) => {
   try {
     const { title, content, author, category, excerpt, image, date, tags, category_id } = req.body;
@@ -57,7 +52,6 @@ const updateArticle = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-// DELETE /api/articles/:id
 const deleteArticle = async (req, res, next) => {
   try {
     const affectedRows = await Article.delete(req.params.id);

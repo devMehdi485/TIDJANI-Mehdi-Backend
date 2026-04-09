@@ -3,8 +3,8 @@ const router = express.Router();
 const { register, login, getMe } = require('../controllers/authController');
 const { verifyToken } = require('../middleware/authMiddleware');
 
-router.post('/register', register);         // POST /api/auth/register
-router.post('/login', login);               // POST /api/auth/login
-router.get('/me', verifyToken, getMe);      // GET  /api/auth/me (protégé)
+router.post('/register', register);
+router.post('/login', login);
+router.get('/me', verifyToken, getMe);
 
 module.exports = router;

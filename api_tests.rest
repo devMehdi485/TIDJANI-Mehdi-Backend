@@ -1,8 +1,6 @@
 @baseUrl = http://localhost:3001
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtZWhkaUAyaWUuY29tIiwidXNlcm5hbWUiOiJNZWhkaSBUaWRqYW5pIiwiaWF0IjoxNzc1NzQ0MTUzLCJleHAiOjE3NzYzNDg5NTN9.f-oIRnBTNBgcauzC3j22Q84GwpkjSo05Mp0iqtDncuc
-###
-# ── SANTÉ DU SERVEUR ─────────────────────────────────────────────
-###
+
 
 ### GET - Vérifier que le serveur fonctionne
 GET {{baseUrl}}/

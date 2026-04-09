@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-// POST /api/auth/register
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -14,18 +13,15 @@ const register = async (req, res, next) => {
       });
     }
 
-    // Vérifier si l'email est déjà utilisé
     const existing = await User.findByEmail(email);
     if (existing) {
       return res.status(409).json({ success: false, message: 'Email déjà utilisé.' });
     }
 
-    // Hasher le mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const userId = await User.create({ username, email, password: hashedPassword });
 
-    // Générer le token JWT
     const token = jwt.sign(
       { id: userId, email, username },
       process.env.JWT_SECRET?.trim() || 'secret_blogdb2',
@@ -43,7 +39,6 @@ const register = async (req, res, next) => {
   }
 };
 
-// POST /api/auth/login
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -55,19 +50,16 @@ const login = async (req, res, next) => {
       });
     }
 
-    // Trouver l'utilisateur
     const user = await User.findByEmail(email);
     if (!user) {
       return res.status(401).json({ success: false, message: 'Email ou mot de passe incorrect.' });
     }
 
-    // Vérifier le mot de passe
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Email ou mot de passe incorrect.' });
     }
 
-    // Générer le token JWT
     const token = jwt.sign(
       { id: user.id, email: user.email, username: user.username },
       process.env.JWT_SECRET?.trim() || 'secret_blogdb2',
@@ -85,7 +77,6 @@ const login = async (req, res, next) => {
   }
 };
 
-// GET /api/auth/me (route protégée)
 const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);

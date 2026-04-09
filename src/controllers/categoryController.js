@@ -1,6 +1,5 @@
 const Category = require('../models/categoryModel');
 
-// GET /api/categories
 const getAllCategories = async (req, res, next) => {
   try {
     const categories = await Category.getAll();
@@ -8,7 +7,6 @@ const getAllCategories = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-// POST /api/categories
 const createCategory = async (req, res, next) => {
   try {
     const { name, slug, description } = req.body;
